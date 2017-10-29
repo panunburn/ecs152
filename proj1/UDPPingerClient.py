@@ -24,25 +24,23 @@ def abbrev(x):
         
 clientSocket = socket(AF_INET, SOCK_DGRAM)
 clientSocket.settimeout(1)
-message = 'abc'
 
 #Try 10 times
 for i in range(1,10):
     timeStart = time.clock()
     start = datetime.datetime.now()
+    message = 'Ping ' + str(i) + ' ' + start.strftime("%Y-%m-%d") + ' ' + abbrev(start.weekday()) + ' ' + start.strftime("%H:%M") + 'PCT'
     try:
         clientSocket.sendto(str.encode(message), (serverName, serverPort))
         modifiedMessage, serverAddress = clientSocket.recvfrom(1024)
         end = datetime.datetime.now()
         RTT = (time.clock() - timeStart) * 1000
-        print("Ping", i, start.strftime("%Y-%m-%d"),
-              abbrev(start.weekday()),start.strftime("%H:%M"), "PCT")
-        print("Ping", i, end.strftime("%Y-%m-%d"),
-              abbrev(end.weekday()), end.strftime("%H:%M"), "PCT")
+        print(message)
+        modifiedMessage = modifiedMessage.decode()
+        print(modifiedMessage)
         print("RTT: %.3f\n" % RTT)
     except:
-        print("Ping", i, start.strftime("%Y-%m-%d"),
-              abbrev(start.weekday()),start.strftime("%H:%M"), "PCT")
+        print(message)
         print("Request time out\n")
  
 
