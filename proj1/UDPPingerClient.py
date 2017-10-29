@@ -41,6 +41,8 @@ for i in range(1,10):
               abbrev(end.weekday()), end.strftime("%H:%M"), "PCT")
         print("RTT: %.3f\n" % RTT)
     except:
+        print("Ping", i, start.strftime("%Y-%m-%d"),
+              abbrev(start.weekday()),start.strftime("%H:%M"), "PCT")
         print("Request time out\n")
  
 
