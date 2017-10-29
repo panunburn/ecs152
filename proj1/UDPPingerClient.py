@@ -14,13 +14,13 @@ serverPort = 12000
 # Notice the use of SOCK_DGRAM for UDP packets
 def abbrev(x):
     return{
-        1: 'M',
-        2: 'T',
-        3: 'W',
-        4: 'R',
-        5: 'F',
-        6: 'S',
-        7: 'U'}.get(x)
+        0: 'M',
+        1: 'T',
+        2: 'W',
+        3: 'R',
+        4: 'F',
+        5: 'S',
+        6: 'U'}.get(x)
         
 clientSocket = socket(AF_INET, SOCK_DGRAM)
 clientSocket.settimeout(1)
