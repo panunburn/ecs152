@@ -1,4 +1,5 @@
 # UDPPingerServer.py
+# Weiran Guo(912916431)
 # We will need the following module to generate randomized lost packets
 
 import random

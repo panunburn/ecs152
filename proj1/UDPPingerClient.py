@@ -1,4 +1,5 @@
 # UDPPingerClient.py
+# Weiran Guo(912916431)
 # we need to implement the client program
 
 from socket import *
@@ -29,7 +30,7 @@ clientSocket.settimeout(1)
 for i in range(1,10):
     timeStart = time.clock()
     start = datetime.datetime.now()
-    message = 'Ping ' + str(i) + ' ' + start.strftime("%Y-%m-%d") + ' ' + abbrev(start.weekday()) + ' ' + start.strftime("%H:%M") + 'PCT'
+    message = 'Ping ' + str(i) + ' ' + start.strftime("%Y-%m-%d") + ' ' + abbrev(start.weekday()) + ' ' + start.strftime("%H:%M") + ' PCT'
     try:
         clientSocket.sendto(str.encode(message), (serverName, serverPort))
         modifiedMessage, serverAddress = clientSocket.recvfrom(1024)
