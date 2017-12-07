@@ -1,0 +1,72 @@
+\documentclass[paper=a4, fontsize=11pt]{scrartcl}
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{amsmath,amsfonts,amsthm,mathrsfs}
+\usepackage{sectsty} % Allows customizing section commands
+\allsectionsfont{\centering \normalfont\scshape} % Make all sections centered, the default font and small caps
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
+\fancyhead{} % No page header - if you want one, create it in the same way as the footers below
+\fancyfoot[L]{} % Empty left footer
+\fancyfoot[C]{} % Empty center footer
+\fancyfoot[R]{\thepage} % Page numbering for right footer
+\renewcommand{\headrulewidth}{0pt} % Remove header underlines
+\renewcommand{\footrulewidth}{0pt} % Remove footer underlines
+\setlength{\headheight}{13.6pt} % Customize the height of the header
+\numberwithin{equation}{section} % Number equations within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{figure}{section} % Number figures within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{table}{section} % Number tables within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\setlength\parindent{0pt} % Removes all indentation from paragraphs - comment this line for an assignment with lots of text
+\newtheorem*{solution}{Solution}
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\title{	
+\normalfont \normalsize 
+\textsc{Dept. of Computer Science, University of California, Davis\\ECS152 \hspace{.5in}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Add your name here %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Weiran Guo(912916431) \hspace{.5in} \today}
+\horrule{0.5pt} \\[0.4cm]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Write the Homework # here %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\huge Project2 Report \\
+\horrule{2pt} \\[0.5cm]
+}
+
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\vspace{-1in}
+
+
+\section{Part 1}
+
+       a).\\
+       if the arrival number of packets is bigger than B, %$\floor*{\frac{B}{\lambda}}$,
+       then the packet loss happens.
+       
+        %\begin{equation}
+            %N = \floor*{\frac{B}{\lambda}}\\
+        %\end{equation}
+        \begin{align}
+           P_d &= 1 - \sum_{i = 0}^{B} \pi_i\\
+            &= 1 - \sum_{i = 0}^{B} (1-\frac{\lambda}{\mu})(\frac{\lambda}{\mu}^i)
+       \end{align}
+       b).simulation code\\
+       
+       c).tables\\
+
+    
+\section{Part 2}
+    
+    
+\end{document}
