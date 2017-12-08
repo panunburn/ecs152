@@ -70,15 +70,14 @@ Weiran Guo(912916431) \hspace{.5in} \today}
         \end{align}
         therefore,
         \begin{align}
-            1 &= \sum_{i = 0}^{B} \pi_i\\
-            1 &= \sum_{i = 0}^{B} \pi_0(\frac{\lambda}{\mu}^i)\\
+            1 &= \sum_{i = 0}^{B+1} \pi_i\\
+            1 &= \sum_{i = 0}^{B+1} \pi_0(\frac{\lambda}{\mu}^i)\\
             \pi_0 &= \frac{1-\frac{\lambda}{\mu}}{1-\frac{\lambda}{\mu}^{B+1}}\\
-            \pi_{B} &= \frac{\frac{\lambda}{\mu}^B(1-\frac{\lambda}{\mu})}{1-\frac{\lambda}{\mu}^{B+1}}\\
-                &= 1 - \frac{1 - \frac{\lambda}{\mu}^B}{1-\frac{\lambda}{\mu}^{B+1}}
+            \pi_{B+1} &= \frac{\frac{\lambda}{\mu}^{B+1}(1-\frac{\lambda}{\mu})}{1-\frac{\lambda}{\mu}^{B+2}}\\
         \end{align}
         hence, the loss rate is
         \begin{equation}
-            P_d = 1 - \frac{1 - \frac{\lambda}{\mu}^B}{1-\frac{\lambda}{\mu}^{B+1}}
+            P_d = \frac{\frac{\lambda}{\mu}^{B+1}(1-\frac{\lambda}{\mu})}{1-\frac{\lambda}{\mu}^{B+2}}\\
         \end{equation}
 
        b).simulation code\\
