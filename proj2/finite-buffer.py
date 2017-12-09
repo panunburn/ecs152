@@ -1,11 +1,9 @@
 
-# coding: utf-8
-
-# In[2]:
-
-
 # This is a simpy based  simulation of a M/M/1 queue system
 # Now the buffer packet size is limited to B
+
+#  Weiran Guo(912916431)
+#  Siqi Pi(912421900)
 
 import random
 import simpy
@@ -66,7 +64,7 @@ class server_queue:
 				idle_period = env.now - self.start_idle_time
 				self.Server_Idle_Periods.addNumber(idle_period)
 				#print("Idle period of length {0} ended".format(idle_period))
-			if self.queue_len < self.buffer_size:#######drop packet
+			if self.queue_len <= self.buffer_size:#######drop packet
 				self.queue_len += 1
 				env.process(self.process_packet(env, new_packet))
 			else:
@@ -120,7 +118,7 @@ class StatObject:
         return math.sqrt(sum)
 
 def cal_packet_loss(arrival_rate, buffer_size):#######the theoretical loss rate
-    pd = 1 - (1 - (arrival_rate/MU)**buffer_size)/(1 - (arrival_rate/MU)**(buffer_size+1))
+    pd = 1 - (1 - (arrival_rate/MU)**(buffer_size+1))/(1 - (arrival_rate/MU)**(buffer_size+2))
     #print(Sum)###########each step print out the calculated probability that the packet of system is <= buffer size
     
     return pd
@@ -139,7 +137,7 @@ def main():
             env.process(router.packets_arrival(env))
             env.run(until=SIM_TIME)
             #expected_delay = 1/MU/(1-(arrival_rate/MU))
-            print ("{0:<9.3f} {1:<9} {2:<9.3f} {3:<9.3f} {4:<9.3f} {5:<9.3f} {6:<9.3f} {7:<9.3f} {8:<9.3f} {9:<9.3f}".format(
+            print ("{0:<9.3f} {1:<9} {2:<9.3f} {3:<9.3f} {4:<9.3f} {5:<9.3f} {6:<9.3f} {7:<9.3f} {8:<9.5f} {9:<9.5f}".format(
                 round(arrival_rate, 3),
                 int(Packet_Delay.count()),
                 round(Packet_Delay.minimum(), 3),
@@ -148,8 +146,8 @@ def main():
                 round(Packet_Delay.median(), 3),
                 round(Packet_Delay.standarddeviation(), 3),
                 round(1-Server_Idle_Periods.sum()/SIM_TIME, 3),
-                round(router.drop_rate(),3),
-                round(cal_packet_loss(arrival_rate, buffer_size),3)))
+                round(router.drop_rate(),5),
+                round(cal_packet_loss(arrival_rate, buffer_size),5)))
 
 if __name__ == '__main__': main()
 

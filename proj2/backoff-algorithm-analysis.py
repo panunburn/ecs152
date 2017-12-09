@@ -1,10 +1,10 @@
+"""Binary Exponetial and Linear Backoff Algorithm"""
 
-# coding: utf-8
+#The program automatically generates the results of both algorithm"""
+# usage: python backoff-algorithm-analysis.py
+#  Weiran Guo(912916431)
+#  Siqi Pi(912421900)
 
-# In[38]:
-
-
-"""Binary Exponetial Backoff Algorithm"""
 import random
 import simpy
 import math

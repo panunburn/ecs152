@@ -5,15 +5,16 @@
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
 \usepackage{listings}
+\lstset{
+  breaklines=true
+}
 \usepackage{amsmath,amsfonts,amsthm,mathrsfs}
 \usepackage{sectsty} % Allows customizing section commands
 \allsectionsfont{\centering \normalfont\scshape} % Make all sections centered, the default font and small caps
 \usepackage{fancyhdr} % Custom headers and footers
 \pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
 \fancyhead{} % No page header - if you want one, create it in the same way as the footers below
-\lstset{
-  breaklines=true
-}
+
 \fancyfoot[L]{} % Empty left footer
 \fancyfoot[C]{} % Empty center footer
 \fancyfoot[R]{\thepage} % Page numbering for right footer
@@ -34,7 +35,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Add your name here %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Weiran Guo(912916431) \hspace{.5in} \today}
+Weiran Guo(912916431)  Siqi Pi(912421900) \hspace{.5in} \today}
 \horrule{0.5pt} \\[0.4cm]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Write the Homework # here %%%%%
@@ -238,114 +239,25 @@ if __name__ == '__main__': main()
     
 \section{Part 2}
     a). Sample execution\\
-    \begin{lstlisting}[language=Python]
-    """Binary Exponetial and Linear Backoff Algorithm"""
+        after simulation,11 of slots required to transmit all the packets from the three nodes.\\
+        Process:\\ 
+        \begin{tabular}{l*{6}{c}r}
+Slot              & Node 1 & Node 2 & Node 3 & S/C&L1   &L2   &L3  \\
+\hline
+0                 & T      & T      & T      & C  &2   &3   &2  \\
+1                 & N      & T      & N      & S  &2   &2   &2  \\
+2                 & T      & T      & T      & C  &2   &2   &2   \\
+3                 & T      & N      & T      & C  &2   &2   &2  \\
+4                 & N      & T      & N      & S  &2   &1   &2   \\
+5                 & N      & T      & T      & C  &2   &1   &2  \\
+6                 & T      & T      & N      & C  &2   &1   &2  \\
+7                 & N      & T      & N      & S  &2   &0   &2  \\
+8                 & N      & N      & T      & S  &2   &0   &1   \\
+9                 & N      & N      & T      & S  &2   &0   &0 \\
+10                & T      & N      & N      & S  &1   &0   &0 \\
+11                & T      & N      & N      & 2  &0   &0   &0   \\
+\end{tabular}
 
-import random
-import simpy
-import math
-
-RANDOM_SEED = 29
-SIM_TIME = 1000000
-MU = 1
-TS = 1 #time slot
-N_HOST = 3 #number of hosts
-
-""" Host class """
-class Host:
-    def __init__(self, env, arrival_rate):
-        self.env = env
-        self.arrival_rate = arrival_rate
-        self.L = 0
-        self.S = 0
-        #self.arrives = 0
-        self.N = 0 #times retransmitted
-        self.server = simpy.Resource(env, capacity = 1)
-        env.process(self.packets_arrival(env))
-        
-    def packets_arrival(self, env):
-        while True:
-            yield env.timeout(random.expovariate(self.arrival_rate))
-            #self.arrives += 1
-            if (self.L == 0): #no packet in the queue
-                self.S = math.floor(env.now) + 1
-                self.N = 0
-            self.L += 1
-        
-    def process_packet(self, env):
-        self.L -= 1
-        if (self.L > 0):
-            self.N = 0
-            self.S = math.floor(env.now) + 1
-    
-    def exp_backoff(self, env):
-        r = min(self.N, N_HOST)
-        self.S = math.floor(env.now + random.randint(0,2**r)*TS) + 1
-        self.N += 1
-        
-    def linear_backoff(self, env):
-        K = min(self.N, 1024)
-        self.S = math.floor(env.now + random.randint(0, K)*TS) + 1
-        self.N += 1
-
-""" Queue system  """		
-class Ethernet:
-    def __init__(self, env, arrival_rate, Type):
-        self.env = env
-        self.hosts = [Host(env, arrival_rate) for i in range(N_HOST)]
-        self.success = 0
-        self.collide = 0
-        self.blank = 0
-        self.Type = Type 
-        self.arrival_rate = arrival_rate
-
-    def sim(self, env):
-        while True:
-            hostLst = []
-            for host in self.hosts:
-                if (host.L > 0 and (host.S == math.floor(env.now))):#host is requesting now
-                    hostLst.append(host)
-            #print(len(hostLst))
-            if (len(hostLst) == 1):#succeed
-                hostLst[0].process_packet(env)
-                self.success += 1
-            elif (len(hostLst) > 1):#collide
-                self.collide += 1
-                for host in hostLst:
-                    if (self.Type == 0):#exponetial
-                        host.exp_backoff(env)
-                    else:
-                        host.linear_backoff(env)
-            else:
-                self.blank += 1
-            yield self.env.timeout(TS)
-                
-
-def main():
-	print("Ethernet system model:mu = {0}, Ts = {1}, N = {2}".format(MU, TS, N_HOST))
-
-	random.seed(RANDOM_SEED)
-	for Type in [0,1]:
-		if (Type == 0):
-			print ("For Exponetial Backoff Algorithm")
-		else:
-			print ("For Linear Backoff Algorithm")
-		print ("{0:<9} {1:<9} {2:<9} {3:<9} {4:<9}".format(
-			"Lambda", "Success", "Failed","Blank", "Throughput"))
-		for arrival_rate in [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09]:
-			env = simpy.Environment()
-			ethernet = Ethernet(env, arrival_rate, Type)
-			env.process(ethernet.sim(env))
-			env.run(until=SIM_TIME)
-			print ("{0:<9.3f} {1:<9} {2:<9}{3:<9} {4:<9.5f}".format(
-				arrival_rate,
-				ethernet.success,
-				ethernet.collide,
-				ethernet.blank,
-				ethernet.success/SIM_TIME))
-	
-if __name__ == '__main__': main()
-    \end{lstlisting}
     \\b).Simulation results of the 10-host system\\
         \includegraphics[scale=0.8]{c}\\\\
         for exponential backoff algorithm, as $\lambda$ increases, the Throughput increases linearly.
